@@ -101,8 +101,8 @@ ee_pose = t_env.getLinkTransform("Link6")
 print("End effector pose matrix:\n", np.array(ee_pose.matrix()))
 
 # Create the input command program waypoints
-wp1 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0, 0.45) * Quaterniond(0, 0, 1, 0))
-wp2 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.39, -0.14, 0.43) * Quaterniond(0, 0, 1, 0))
+wp1 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.3, 0.45) * Quaterniond(0, 0, 1, 0))
+wp2 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.39, -0.3, 0.43) * Quaterniond(0, 0, 1, 0))
 # wp3 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.14, 0.73) * Quaterniond(0, 0, 1, 0))
 
 
