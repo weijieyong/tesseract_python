@@ -1,6 +1,6 @@
 from tesseract_robotics.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond, \
     ManipulatorInfo, GeneralResourceLocator
-from tesseract_robotics.tesseract_environment import Environment
+from tesseract_robotics.tesseract_environment import Environment, AddLinkCommand
 from tesseract_robotics.tesseract_common import ResourceLocator, SimpleLocatedResource
 from tesseract_robotics.tesseract_command_language import CartesianWaypoint, WaypointPoly, \
     MoveInstructionType_FREESPACE, MoveInstruction, InstructionPoly, \
@@ -16,6 +16,9 @@ from tesseract_robotics.tesseract_time_parameterization import TimeOptimalTrajec
     InstructionsTrajectory
 from tesseract_robotics.tesseract_motion_planners_trajopt import TrajOptDefaultPlanProfile, TrajOptDefaultCompositeProfile, \
     TrajOptMotionPlanner
+from tesseract_robotics.tesseract_scene_graph import Link, Joint, Visual, Collision, JointType_FIXED
+from tesseract_robotics.tesseract_geometry import Box
+
 
 import os
 import re
@@ -67,6 +70,27 @@ t_env = Environment()
 # locator_fn must be kept alive by maintaining a reference
 # assert t_env.init(abb_irb2400_urdf_fname, abb_irb2400_srdf_fname, locator)
 assert t_env.init(rm_65_b_urdf_fname, rm_65_b_srdf_fname, locator)
+
+# Add a fixed obstacle so the planner must route around it
+box_obstacle = Box(0.7, 0.1, 1.0)
+# box_obstacle = Box(0.3, 0.1, 0.4) # small
+box_link = Link("box_obstacle")
+box_visual = Visual()
+box_visual.geometry = box_obstacle
+box_link.visual.push_back(box_visual)
+box_collision = Collision()
+box_collision.geometry = box_obstacle
+box_link.collision.push_back(box_collision)
+
+box_joint = Joint("box_obstacle_joint")
+box_joint.parent_link_name = "base_cuboid"
+box_joint.child_link_name = box_link.getName()
+box_joint.type = JointType_FIXED
+box_joint.parent_to_joint_origin_transform = Isometry3d.Identity() * Translation3d(0.9, 0.0, 0.3)
+# box_joint.parent_to_joint_origin_transform = Isometry3d.Identity() * Translation3d(0.45, 0.0, 0.3)
+
+t_env.applyCommand(AddLinkCommand(box_link, box_joint))
+
 
 # Fill in the manipulator information. This is used to find the kinematic chain for the manipulator. This must
 # match the SRDF, although the exact tcp_frame can differ if a tool is used.

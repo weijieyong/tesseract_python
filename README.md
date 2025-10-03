@@ -1,29 +1,30 @@
 # Tesseract Python
 
-## Quick Start
+Lightweight workspace for testing Tesseract motion planning with the Realman [RM65-B](https://www.realman-robotics.com/rm65-ae1.html) arm—no ROS in the loop.
+
+## Preview
 
 ![](media/plan_side_by_side.gif)
 
-Run example scripts:
+## Running The Samples
+
+Assumes [`uv`](https://github.com/astral-sh/uv) is available.
+
 ```bash
+# demo using the Tesseract Planning Task Composer
 uv run examples/my_tesseract_planning_example_composer.py
-# or
+# without Tesseract Planning Task Composer
 uv run examples/my_tesseract_planning_example_no_composer.py
-# or
+# solving kinematics
 uv run examples/my_tesseract_kinematics_example.py
 ```
 
-## Project Goal
+## Highlights
 
-- Enable motion planning for the Realman [RM65-B](https://www.realman-robotics.com/rm65-ae1.html) robot arm
-- No ROS required
+- RM65-B URDF loads with dummy gripper and TCP
+- SRDF, KDL plugin config created manually
+- Obstacle-aware motion plans execute successfully in viewer
 
-## Status
+## Notes
 
-- URDF loads successfully with dummy gripper and TCP
-- SRDF and plugins.yaml created manually for RM65-B robot
-- Motion planning around obstacles tested and working
-
-## Current Blockers
-
-- [x] OMPL planner error: "All start states are either in collision or outside limits" (resolved by changing EEF pose (orientation, this robot ROM is limited))
+- ~~OMPL error (`All start states are either in collision or outside limits`) resolved by adjusting EEF orientation to stay within joint limits~~
