@@ -28,10 +28,10 @@
     </group_tcps> -->
 
     <!--Groups kinematic plugins -->
-    <kinematics_plugin_config filename="/home/artc/weijie/tesseract_python/urdf/rm_65_b_plugins.yaml"/>
+    <kinematics_plugin_config filename="/home/simt-wj/01_Active/tesseract_python/urdf/rm_65_b_plugins.yaml"/>
 
     <!--Contact Managers plugins -->
-    <contact_managers_plugin_config filename="/home/artc/weijie/tesseract_python/urdf/contact_manager_plugins.yaml"/>
+    <contact_managers_plugin_config filename="/home/simt-wj/01_Active/tesseract_python/urdf/contact_manager_plugins.yaml"/>
 
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
     <virtual_joint name="FixedBase" type="fixed" parent_frame="world" child_link="base_cuboid" />

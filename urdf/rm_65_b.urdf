@@ -42,7 +42,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/base_link.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/base_link.STL"/>
       </geometry>
       <material name="">
         <color rgba="1 1 1 1"/>
@@ -51,7 +51,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/base_link.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/base_link.STL"/>
       </geometry>
     </collision>
   </link>
@@ -66,7 +66,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link1.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link1.STL"/>
       </geometry>
       <material name="">
         <color rgba="1 1 1 1"/>
@@ -75,7 +75,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link1.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link1.STL"/>
       </geometry>
     </collision>
   </link>
@@ -99,7 +99,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link2.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link2.STL"/>
       </geometry>
       <material name="">
         <color rgba="1 1 1 1"/>
@@ -108,7 +108,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link2.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link2.STL"/>
       </geometry>
     </collision>
   </link>
@@ -132,7 +132,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link3.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link3.STL"/>
       </geometry>
       <material name="">
         <color rgba="1 1 1 1"/>
@@ -141,7 +141,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link3.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link3.STL"/>
       </geometry>
     </collision>
   </link>
@@ -165,7 +165,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link4.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link4.STL"/>
       </geometry>
       <material name="">
         <color rgba="1 1 1 1"/>
@@ -174,7 +174,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link4.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link4.STL"/>
       </geometry>
     </collision>
   </link>
@@ -198,7 +198,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link5.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link5.STL"/>
       </geometry>
       <material name="">
         <color rgba="1 1 1 1"/>
@@ -207,7 +207,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link5.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link5.STL"/>
       </geometry>
     </collision>
   </link>
@@ -231,7 +231,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link6.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link6.STL"/>
       </geometry>
       <material name="">
         <color rgba="1 1 1 1"/>
@@ -240,7 +240,7 @@
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/artc/weijie/tesseract_python/meshes/rm_65_b/link6.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link6.STL"/>
       </geometry>
     </collision>
   </link>

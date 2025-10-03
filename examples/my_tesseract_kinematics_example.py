@@ -3,6 +3,7 @@ from tesseract_robotics.tesseract_common import FilesystemPath, GeneralResourceL
 from tesseract_robotics.tesseract_environment import Environment
 from tesseract_robotics.tesseract_kinematics import KinGroupIKInput, KinGroupIKInputs
 import numpy as np
+import os
 
 # Example of using kinematics to solve for forward and inverse kinematics. A tesseract environment is created
 # using URDF and SRDF files. The kinematics solver is configured using the SRDF file and plugin configuration files.
@@ -34,8 +35,11 @@ from tesseract_robotics_viewer import TesseractViewer
 
 locator = GeneralResourceLocator()
 env = Environment()
-urdf_path = FilesystemPath("/home/artc/weijie/tesseract_python/urdf/rm_65_b.urdf")
-srdf_path = FilesystemPath("/home/artc/weijie/tesseract_python/urdf/rm_65_b.srdf")
+# Get the script directory and construct relative paths to URDF files
+script_dir = os.path.dirname(os.path.abspath(__file__))
+urdf_dir = os.path.join(os.path.dirname(script_dir), "urdf")
+urdf_path = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.urdf"))
+srdf_path = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.srdf"))
 assert env.init(urdf_path, srdf_path, locator)
 
 viewer = TesseractViewer()

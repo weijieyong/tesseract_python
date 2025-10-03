@@ -55,8 +55,12 @@ TRAJOPT_DEFAULT_NAMESPACE = "TrajOptMotionPlannerTask"
 
 # Initialize the resource locator and environment
 locator = GeneralResourceLocator()
-rm_65_b_urdf_fname = FilesystemPath("/home/artc/weijie/tesseract_python/urdf/rm_65_b.urdf")
-rm_65_b_srdf_fname = FilesystemPath("/home/artc/weijie/tesseract_python/urdf/rm_65_b.srdf")
+
+# Get the script directory and construct relative paths to URDF files
+script_dir = os.path.dirname(os.path.abspath(__file__))
+urdf_dir = os.path.join(os.path.dirname(script_dir), "urdf")
+rm_65_b_urdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.urdf"))
+rm_65_b_srdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.srdf"))
 
 t_env = Environment()
 
@@ -97,9 +101,9 @@ ee_pose = t_env.getLinkTransform("Link6")
 print("End effector pose matrix:\n", np.array(ee_pose.matrix()))
 
 # Create the input command program waypoints
-wp1 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0, 0.75))
-wp2 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.39, -0.14, 0.73))
-wp3 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.14, 0.73))
+wp1 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0, 0.45) * Quaterniond(0, 0, 1, 0))
+wp2 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.39, -0.14, 0.43) * Quaterniond(0, 0, 1, 0))
+# wp3 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.14, 0.73) * Quaterniond(0, 0, 1, 0))
 
 
 
@@ -108,7 +112,7 @@ wp3 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.14, 0.73))
 # conversion from the CartesianWaypoint to the CartesianWaypointPoly.
 start_instruction = MoveInstruction(CartesianWaypointPoly_wrap_CartesianWaypoint(wp1), MoveInstructionType_FREESPACE, "DEFAULT")
 plan_f1 = MoveInstruction(CartesianWaypointPoly_wrap_CartesianWaypoint(wp2), MoveInstructionType_FREESPACE, "DEFAULT")
-plan_f2 = MoveInstruction(CartesianWaypointPoly_wrap_CartesianWaypoint(wp3), MoveInstructionType_FREESPACE, "DEFAULT")
+# plan_f2 = MoveInstruction(CartesianWaypointPoly_wrap_CartesianWaypoint(wp3), MoveInstructionType_FREESPACE, "DEFAULT")
 
 # Create the input command program. Note the use of *_wrap_MoveInstruction functions. This is required because the
 # Python bindings do not support implicit conversion from the MoveInstruction to the MoveInstructionPoly.
