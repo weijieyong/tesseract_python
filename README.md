@@ -21,14 +21,4 @@ uv run examples/my_tesseract_kinematics_example.py
 
 ## Current Blockers
 
-- [ ] IK solution: expected pose is different from actual result
-- [ ] This leads to the following error when running OMPL planner:
-
-```bash
-Traceback (most recent call last):
-  File "/home/artc/weijie/tesseract_python/examples/my_tesseract_planning_example_no_composer.py", line 139, in <module>
-    response=ompl_planner.solve(request)
-  File "/home/artc/weijie/tesseract_python/.venv/lib/python3.10/site-packages/tesseract_robotics/tesseract_motion_planners_ompl/tesseract_motion_planners_ompl_python.py", line 603, in solve
-    return _tesseract_motion_planners_ompl_python.OMPLMotionPlanner_solve(self, request)
-RuntimeError: In OMPLPlannerFreespaceConfig: All start states are either in collision or outside limits
-```
+- [x] OMPL planner error: "All start states are either in collision or outside limits" (resolved by changing EEF pose (orientation, this robot ROM is limited))
