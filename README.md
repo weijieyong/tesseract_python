@@ -2,8 +2,12 @@
 
 ## Quick Start
 
+![](media/plan_side_by_side.gif)
+
 Run example scripts:
 ```bash
+uv run examples/my_tesseract_planning_example_composer.py
+# or
 uv run examples/my_tesseract_planning_example_no_composer.py
 # or
 uv run examples/my_tesseract_kinematics_example.py
@@ -16,8 +20,9 @@ uv run examples/my_tesseract_kinematics_example.py
 
 ## Status
 
-- URDF loads successfully
-- SRDF and plugins.yaml created manually (referenced ABB IRB2400)
+- URDF loads successfully with dummy gripper and TCP
+- SRDF and plugins.yaml created manually for RM65-B robot
+- Motion planning around obstacles tested and working
 
 ## Current Blockers
 
