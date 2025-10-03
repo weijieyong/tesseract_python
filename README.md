@@ -28,3 +28,4 @@ uv run examples/my_tesseract_kinematics_example.py
 ## Notes
 
 - ~~OMPL error (`All start states are either in collision or outside limits`) resolved by adjusting EEF orientation to stay within joint limits~~
+- Users may need to update file paths in URDF and YAML configuration files to match their local directory structure.
