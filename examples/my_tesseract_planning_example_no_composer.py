@@ -71,7 +71,7 @@ assert t_env.init(rm_65_b_urdf_fname, rm_65_b_srdf_fname, locator)
 # Fill in the manipulator information. This is used to find the kinematic chain for the manipulator. This must
 # match the SRDF, although the exact tcp_frame can differ if a tool is used.
 manip_info = ManipulatorInfo()
-manip_info.tcp_frame = "Link6"
+manip_info.tcp_frame = "dummy_tcp"
 manip_info.manipulator = "manipulator"
 manip_info.working_frame = "base_cuboid"
 
@@ -97,7 +97,7 @@ viewer.start_serve_background()
 # Set the initial state of the robot
 # t_env.setState(joint_names, safe_joint_positions)
 
-ee_pose = t_env.getLinkTransform("Link6")
+ee_pose = t_env.getLinkTransform("dummy_tcp")
 print("End effector pose matrix:\n", np.array(ee_pose.matrix()))
 
 # Create the input command program waypoints

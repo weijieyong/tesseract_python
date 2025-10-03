@@ -55,4 +55,7 @@
     <disable_collisions link1="Link4" link2="Link5" reason="Adjacent" />
     <disable_collisions link1="Link4" link2="Link6" reason="Default" />
     <disable_collisions link1="Link5" link2="Link6" reason="Adjacent" />
+    <disable_collisions link1="Link6" link2="dummy_gripper" reason="Adjacent" />
+    <disable_collisions link1="dummy_gripper" link2="dummy_tcp" reason="Adjacent" />
+    <disable_collisions link1="Link6" link2="dummy_tcp" reason="Never" />
 </robot>
