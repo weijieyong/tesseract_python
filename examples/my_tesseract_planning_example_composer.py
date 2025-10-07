@@ -84,7 +84,8 @@ urdf_dir = os.path.join(os.path.dirname(script_dir), "urdf")
 config_dir = os.path.join(os.path.dirname(script_dir), "config")
 rm_65_b_urdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.urdf"))
 rm_65_b_srdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.srdf"))
-task_composer_filename = str(FilesystemPath(os.path.join(config_dir, "task_composer_plugins_no_trajopt_ifopt.yaml")))
+task_composer_filename = str(FilesystemPath(os.path.join(config_dir, "task_composer_plugins.yaml")))
+# task_composer_filename = str(FilesystemPath(os.path.join(config_dir, "task_composer_plugins_no_trajopt_ifopt.yaml")))
 t_env = Environment()
 
 # locator_fn must be kept alive by maintaining a reference
