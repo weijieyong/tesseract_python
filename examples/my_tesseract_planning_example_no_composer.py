@@ -18,6 +18,7 @@ from tesseract_robotics.tesseract_motion_planners_trajopt import TrajOptDefaultP
     TrajOptMotionPlanner
 from tesseract_robotics.tesseract_scene_graph import Link, Joint, Visual, Collision, JointType_FIXED
 from tesseract_robotics.tesseract_geometry import Box
+from tesseract_robotics.tesseract_collision import ContactTestType_ALL
 
 
 import os
@@ -27,6 +28,7 @@ from tesseract_robotics_viewer import TesseractViewer
 import numpy as np
 import time
 import sys
+from scipy.interpolate import CubicSpline
 
 # This example demonstrates using the Tesseract Planners without using the Tesseract Composer. In most cases it is
 # recommended to use the Tesseract Composer as it provides a more robust and flexible interface. However, there are
@@ -72,8 +74,7 @@ t_env = Environment()
 assert t_env.init(rm_65_b_urdf_fname, rm_65_b_srdf_fname, locator)
 
 # Add a fixed obstacle so the planner must route around it
-box_obstacle = Box(0.7, 0.1, 1.0)
-# box_obstacle = Box(0.3, 0.1, 0.4) # small
+box_obstacle = Box(0.7, 0.1, 0.8)
 box_link = Link("box_obstacle")
 box_visual = Visual()
 box_visual.geometry = box_obstacle
@@ -174,8 +175,25 @@ interpolated_results_instruction = generateInterpolatedProgram(results_instructi
 
 # Create the TrajOpt planner profile configurations. TrajOpt is used to optimize the random program generated
 # by OMPL
-trajopt_plan_profile = TrajOptDefaultPlanProfile()
+trajopt_plan_profile = TrajOptDefaultPlanProfile() 
 trajopt_composite_profile = TrajOptDefaultCompositeProfile()
+trajopt_composite_profile.contact_test_type = ContactTestType_ALL
+trajopt_composite_profile.smooth_velocities = True
+trajopt_composite_profile.velocity_coeff = np.ones(6)
+trajopt_composite_profile.smooth_accelerations = True
+trajopt_composite_profile.acceleration_coeff = np.ones(6)
+trajopt_composite_profile.smooth_jerks = False
+trajopt_composite_profile.jerk_coeff = np.ones(6)
+trajopt_composite_profile.longest_valid_segment_fraction = 0.05
+trajopt_composite_profile.longest_valid_segment_length = 0.5
+trajopt_composite_profile.avoid_singularity = True
+trajopt_composite_profile.avoid_singularity_coeff = 5.0
+
+# Collision config modification example (if needed):
+# trajopt_composite_profile.collision_cost_config.enabled = True
+# trajopt_composite_profile.collision_cost_config.buffer_margin = 0.025
+# trajopt_composite_profile.collision_constraint_config.enabled = True
+# trajopt_composite_profile.collision_constraint_config.safety_margin = 0.01
 
 trajopt_profiles = ProfileDictionary()
 trajopt_profiles.addProfile(TRAJOPT_DEFAULT_NAMESPACE, "DEFAULT", trajopt_plan_profile)
@@ -191,6 +209,8 @@ trajopt_request.env = t_env
 trajopt_request.profiles = trajopt_profiles
 
 trajopt_response = trajopt_planner.solve(trajopt_request)
+if not trajopt_response.successful:
+    print("TrajOpt failed! Check constraints and parameters.")
 assert trajopt_response.successful
     
 trajopt_results_instruction =trajopt_response.results
@@ -201,7 +221,7 @@ trajopt_results_instruction =trajopt_response.results
 # output program since the input is modified.
 time_parameterization = TimeOptimalTrajectoryGeneration()
 instructions_trajectory = InstructionsTrajectory(trajopt_results_instruction)
-max_velocity = np.array([[2.088, 2.082, 3.27, 3.6, 3.3, 3.078]],dtype=np.float64)
+max_velocity = np.array([[2.5, 2.5, 3.5, 3.5, 3.5, 3.5]],dtype=np.float64)
 max_velocity = np.hstack((-max_velocity.T, max_velocity.T))
 max_acceleration = np.array([[ 1, 1, 1, 1, 1, 1]],dtype=np.float64)
 max_acceleration = np.hstack((-max_acceleration.T, max_acceleration.T))
@@ -220,6 +240,37 @@ for instr in trajopt_results:
     assert wp1.isStateWaypoint()
     wp = WaypointPoly_as_StateWaypointPoly(wp1)
     print(f"Joint Positions: {wp.getPosition().flatten()} time: {wp.getTime()}")
+
+# Resample trajectory to fixed timestamps
+# times = []
+# positions = []
+# for instr in trajopt_results:
+#     move_instr1 = InstructionPoly_as_MoveInstructionPoly(instr)
+#     wp1 = move_instr1.getWaypoint()
+#     wp = WaypointPoly_as_StateWaypointPoly(wp1)
+#     times.append(wp.getTime())
+#     positions.append(wp.getPosition().flatten())
+
+# times = np.array(times)
+# positions = np.array(positions)
+
+# # Create fixed time steps (e.g., 100Hz = 0.01s)
+# dt = 0.01
+# if len(times) > 1:
+#     fixed_times = np.arange(times[0], times[-1], dt)
+#     # Include the last point if not covered
+#     if fixed_times[-1] < times[-1]:
+#         fixed_times = np.append(fixed_times, times[-1])
+        
+#     # Use CubicSpline for smooth interpolation
+#     cs = CubicSpline(times, positions, axis=0)
+#     fixed_positions = cs(fixed_times)
+
+#     print("\nFixed Timestamp Trajectory:")
+#     for t, pos in zip(fixed_times, fixed_positions):
+#         print(f"Joint Positions: {pos} time: {t:.4f}")
+# else:
+#     print("Not enough points to interpolate")
 
 # Update the viewer with the results to animate the trajectory
 # Open web browser to http://localhost:8000 to view the results

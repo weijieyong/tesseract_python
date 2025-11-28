@@ -3,6 +3,7 @@ import traceback
 import os
 import numpy as np
 import numpy.testing as nptest
+from scipy.interpolate import BPoly
 
 from tesseract_robotics.tesseract_common import GeneralResourceLocator
 from tesseract_robotics.tesseract_environment import Environment, AnyPoly_wrap_EnvironmentConst, AddLinkCommand
@@ -74,6 +75,7 @@ from tesseract_robotics.tesseract_geometry import Box
 
 OMPL_DEFAULT_NAMESPACE = "OMPLMotionPlannerTask"
 TRAJOPT_DEFAULT_NAMESPACE = "TrajOptMotionPlannerTask"
+TRAJECTORY_DT = 0.01  # change this depends on your hardware 100hz
 
 
 # Initialize the resource locator and environment
@@ -92,7 +94,10 @@ t_env = Environment()
 assert t_env.init(rm_65_b_urdf_fname, rm_65_b_srdf_fname, locator)
 
 # Add a fixed obstacle so the planner must route around it
-box_obstacle = Box(0.7, 0.1, 1.0)
+BOX_HEIGHT = 0.8
+BOX_WIDTH = 0.1
+BOX_DEPTH = 0.6
+box_obstacle = Box(BOX_DEPTH, BOX_WIDTH, BOX_HEIGHT)
 # box_obstacle = Box(0.3, 0.1, 0.4) # small
 box_link = Link("box_obstacle")
 box_visual = Visual()
@@ -106,7 +111,7 @@ box_joint = Joint("box_obstacle_joint")
 box_joint.parent_link_name = "base_cuboid"
 box_joint.child_link_name = box_link.getName()
 box_joint.type = JointType_FIXED
-box_joint.parent_to_joint_origin_transform = Isometry3d.Identity() * Translation3d(0.9, 0.0, 0.3)
+box_joint.parent_to_joint_origin_transform = Isometry3d.Identity() * Translation3d(0.9, 0.0, BOX_HEIGHT/2)
 # box_joint.parent_to_joint_origin_transform = Isometry3d.Identity() * Translation3d(0.45, 0.0, 0.3)
 
 t_env.applyCommand(AddLinkCommand(box_link, box_joint))
@@ -157,7 +162,7 @@ config_path = FilesystemPath(task_composer_filename)
 factory = TaskComposerPluginFactory(config_path, locator)
 
 # Create the task composer node. In this case the FreespacePipeline is used. Many other are available.
-task = factory.createTaskComposerNode("FreespacePipeline")
+task = factory.createTaskComposerNode("TrajOptPipeline")
 
 # Get the output keys for the task
 output_key = task.getOutputKeys().get("program")
@@ -209,3 +214,79 @@ viewer.update_trajectory(results)
 viewer.plot_trajectory(results, manip_info)
 
 input("press enter to exit")
+
+# Analyze the trajectory
+times = []
+positions = []
+velocities = []
+for instr in results:
+    if instr.isMoveInstruction():
+        move_instr = InstructionPoly_as_MoveInstructionPoly(instr)
+        wp = WaypointPoly_as_StateWaypointPoly(move_instr.getWaypoint())
+        times.append(wp.getTime())
+        positions.append(np.asarray(wp.getPosition()).flatten())
+        velocities.append(np.asarray(wp.getVelocity()).flatten())
+
+print(f"Number of waypoints: {len(times)}")
+print(f"Times: {times}")
+
+if len(velocities) > 0 and len(velocities[0]) > 0:
+    print("Velocities are present. Using BPoly for interpolation.")
+    
+    # Prepare data for BPoly
+    # yi must be shape (n_points, n_dims) if only function values
+    # or (n_points, n_derivatives, n_dims) if derivatives are included.
+    # Here we have position and velocity, so n_derivatives = 2.
+    
+    # positions: (N, 6)
+    # velocities: (N, 6)
+    
+    # Stack them: (N, 2, 6)
+    yi = np.stack([positions, velocities], axis=1)
+    
+    # Create the interpolator
+    interpolator = BPoly.from_derivatives(times, yi)
+    
+    # Define fixed timestamps
+    dt = TRAJECTORY_DT # 100 Hz
+    t_start = times[0]
+    t_end = times[-1]
+    fixed_timestamps = np.arange(t_start, t_end + dt, dt)
+    
+    # Evaluate
+    interpolated_positions = interpolator(fixed_timestamps)
+    
+    # Save/Print
+    fixed_output_path = os.path.join(script_dir, "joint_positions_fixed_dt.txt")
+    with open(fixed_output_path, "w", encoding="utf-8") as f:
+        for t, pos in zip(fixed_timestamps, interpolated_positions):
+            pos_deg = np.rad2deg(pos)
+            pos_str = ", ".join(f"{angle:.6f}" for angle in pos_deg)
+            # print(f"Time {t:.3f}: {pos_str}")
+            f.write(f"{t:.6f}, {pos_str}\n")
+            
+    print(f"Interpolated trajectory saved to {fixed_output_path}")
+    print(f"Total points: {len(fixed_timestamps)}")
+
+else:
+    print("Velocities are NOT present. Using linear interpolation.")
+    from scipy.interpolate import interp1d
+    
+    interpolator = interp1d(times, positions, axis=0, kind='linear')
+    
+    dt = TRAJECTORY_DT
+    t_start = times[0]
+    t_end = times[-1]
+    fixed_timestamps = np.arange(t_start, t_end + dt, dt)
+    
+    interpolated_positions = interpolator(fixed_timestamps)
+    
+    fixed_output_path = os.path.join(script_dir, "joint_positions_fixed_dt.txt")
+    with open(fixed_output_path, "w", encoding="utf-8") as f:
+        for t, pos in zip(fixed_timestamps, interpolated_positions):
+            pos_deg = np.rad2deg(pos)
+            pos_str = ", ".join(f"{angle:.6f}" for angle in pos_deg)
+            f.write(f"{t:.6f}, {pos_str}\n")
+            
+    print(f"Interpolated trajectory saved to {fixed_output_path}")
+    print(f"Total points: {len(fixed_timestamps)}")
