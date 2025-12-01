@@ -84,8 +84,8 @@ locator = GeneralResourceLocator()
 script_dir = os.path.dirname(os.path.abspath(__file__))
 urdf_dir = os.path.join(os.path.dirname(script_dir), "urdf")
 config_dir = os.path.join(os.path.dirname(script_dir), "config")
-rm_65_b_urdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.urdf"))
-rm_65_b_srdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.srdf"))
+rm_65_b_urdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b_full.urdf"))
+rm_65_b_srdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b_full.srdf"))
 task_composer_filename = str(FilesystemPath(os.path.join(config_dir, "task_composer_plugins.yaml")))
 # task_composer_filename = str(FilesystemPath(os.path.join(config_dir, "task_composer_plugins_no_trajopt_ifopt.yaml")))
 t_env = Environment()
@@ -119,7 +119,7 @@ t_env.applyCommand(AddLinkCommand(box_link, box_joint))
 # Fill in the manipulator information. This is used to find the kinematic chain for the manipulator. This must
 # match the SRDF, although the exact tcp_frame can differ if a tool is used.
 manip_info = ManipulatorInfo()
-manip_info.tcp_frame = "dummy_tcp"
+manip_info.tcp_frame = "tcp_link"
 manip_info.manipulator = "manipulator"
 manip_info.working_frame = "base_cuboid"
 

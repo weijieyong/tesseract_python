@@ -64,8 +64,8 @@ locator = GeneralResourceLocator()
 # Get the script directory and construct relative paths to URDF files
 script_dir = os.path.dirname(os.path.abspath(__file__))
 urdf_dir = os.path.join(os.path.dirname(script_dir), "urdf")
-rm_65_b_urdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.urdf"))
-rm_65_b_srdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b.srdf"))
+rm_65_b_urdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b_full.urdf"))
+rm_65_b_srdf_fname = FilesystemPath(os.path.join(urdf_dir, "rm_65_b_full.srdf"))
 
 t_env = Environment()
 
@@ -96,7 +96,7 @@ t_env.applyCommand(AddLinkCommand(box_link, box_joint))
 # Fill in the manipulator information. This is used to find the kinematic chain for the manipulator. This must
 # match the SRDF, although the exact tcp_frame can differ if a tool is used.
 manip_info = ManipulatorInfo()
-manip_info.tcp_frame = "dummy_tcp"
+manip_info.tcp_frame = "tcp_link"
 manip_info.manipulator = "manipulator"
 manip_info.working_frame = "base_cuboid"
 
@@ -122,7 +122,7 @@ viewer.start_serve_background()
 # Set the initial state of the robot
 # t_env.setState(joint_names, safe_joint_positions)
 
-ee_pose = t_env.getLinkTransform("dummy_tcp")
+ee_pose = t_env.getLinkTransform("tcp_link")
 print("End effector pose matrix:\n", np.array(ee_pose.matrix()))
 
 # Create the input command program waypoints
