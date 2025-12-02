@@ -1,6 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <robot name="rm_65_b">
+
+  <!-- Material Definitions -->
+  <material name="gray_aluminum">
+    <color rgba="0.4 0.4 0.4 1.0"/>
+  </material>
+  
+  <material name="white">
+    <color rgba="0.9 0.9 0.9 1"/>
+  </material>
+  
+  <material name="robotiq_gray">
+    <color rgba="0.1 0.1 0.1 1"/>
+  </material>
+  
+  <material name="red">
+    <color rgba="1.0 0.0 0.0 0.9"/>
+  </material>
+  
+  <material name="camera_material">
+    <color rgba="0.3 0.3 0.3 1.0"/>
+  </material>
+  
+  <material name="usb_cable">
+    <color rgba="0.1 0.1 0.1 1.0"/>
+  </material>
+
   <!-- Base cuboid link -->
   <link name="base_cuboid">
     <inertial>
@@ -13,9 +39,7 @@
       <geometry>
         <box size="0.4 0.3 0.4"/>
       </geometry>
-      <material name="gray">
-        <color rgba="0.5 0.5 0.5 1.0"/>
-      </material>
+      <material name="gray_aluminum"/>
     </visual>
     <collision>
       <origin xyz="0 0 0.2" rpy="0 0 0"/>
@@ -42,16 +66,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/base_link.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/base_link.STL"/>
       </geometry>
-      <material name="">
-        <color rgba="1 1 1 1"/>
-      </material>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/base_link.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/base_link.STL"/>
       </geometry>
     </collision>
   </link>
@@ -66,16 +88,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link1.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link1.STL"/>
       </geometry>
-      <material name="">
-        <color rgba="1 1 1 1"/>
-      </material>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link1.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link1.STL"/>
       </geometry>
     </collision>
   </link>
@@ -99,16 +119,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link2.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link2.STL"/>
       </geometry>
-      <material name="">
-        <color rgba="1 1 1 1"/>
-      </material>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link2.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link2.STL"/>
       </geometry>
     </collision>
   </link>
@@ -132,16 +150,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link3.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link3.STL"/>
       </geometry>
-      <material name="">
-        <color rgba="1 1 1 1"/>
-      </material>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link3.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link3.STL"/>
       </geometry>
     </collision>
   </link>
@@ -165,16 +181,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link4.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link4.STL"/>
       </geometry>
-      <material name="">
-        <color rgba="1 1 1 1"/>
-      </material>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link4.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link4.STL"/>
       </geometry>
     </collision>
   </link>
@@ -198,16 +212,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link5.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link5.STL"/>
       </geometry>
-      <material name="">
-        <color rgba="1 1 1 1"/>
-      </material>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link5.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link5.STL"/>
       </geometry>
     </collision>
   </link>
@@ -231,16 +243,14 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link6.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link6.STL"/>
       </geometry>
-      <material name="">
-        <color rgba="1 1 1 1"/>
-      </material>
+      <material name="white"/>
     </visual>
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="/home/simt-wj/05_urdf/rm_65_b/meshes/rm_65_b/link6.STL"/>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/rm_65_b/link6.STL"/>
       </geometry>
     </collision>
   </link>
@@ -254,13 +264,77 @@
     <limit lower="-6.28" upper="6.28" effort="10" velocity="3.92"/>
   </joint>
 
-  <joint name="joint_tcp_fixed" type="fixed">
+  <!-- Gripper Mount -->
+  <link name="gripper_mount_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.039" length="0.06"/>
+      </geometry>
+      <material name="gray_aluminum"/>
+    </visual>
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <cylinder radius="0.039" length="0.06"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="gripper_mount_joint" type="fixed">
     <parent link="Link6"/>
-    <child link="robotiq_85_base_link"/>
-    <origin xyz="0 0 0.063" rpy="0 0 1.5708"/>
+    <child link="gripper_mount_link"/>
+    <origin xyz="0 0 0.03" rpy="0 0 0"/>
   </joint>
 
-  <!-- gripper robotiq-2f-85 -->
+  <joint name="joint_tcp_fixed" type="fixed">
+    <parent link="gripper_mount_link"/>
+    <child link="robotiq_85_base_link"/>
+    <origin xyz="0 0 0.033" rpy="0 0 1.5708"/>
+  </joint>
+
+  <!-- Camera Mount -->
+  <link name="camera_mount_link">
+    <visual>
+      <origin xyz="-0.018 0 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.09 0.06 0.01"/>
+      </geometry>
+      <material name="gray_aluminum"/>
+    </visual>
+    <visual>
+      <origin xyz="-0.05 0 0.0" rpy="0 0.39 0"/>
+      <geometry>
+        <box size="0.01 0.06 0.05"/>
+      </geometry>
+      <material name="gray_aluminum"/>
+    </visual>
+    <collision>
+      <origin xyz="-0.018 0 -0.025" rpy="0 0 0"/>
+      <geometry>
+        <box size="0.09 0.06 0.01"/>
+      </geometry>
+    </collision>
+    <collision>
+      <origin xyz="-0.05 0 0.0" rpy="0 0.39 0"/>
+      <geometry>
+        <box size="0.01 0.06 0.05"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="camera_mount_joint" type="fixed">
+    <parent link="Link6"/>
+    <child link="camera_mount_link"/>
+    <origin xyz="-0.055 0 0.035" rpy="0 0 0"/>
+  </joint>
+
+  <joint name="camera_joint" type="fixed">
+    <parent link="camera_mount_link"/>
+    <child link="camera_link"/>
+    <origin xyz="-0.055 0 0.035" rpy="0.39 0.0 1.57"/>
+    <!-- <origin xyz="-0.118 0.038 0.0703" rpy="0.4 0.0 1.57"/> -->
+  </joint>
   <link
     name="robotiq_85_base_link">
     <inertial>
@@ -285,11 +359,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/robotiq_85_base_link_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -325,11 +395,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/outer_knuckle_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -383,11 +449,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/outer_finger_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -436,11 +498,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/inner_knuckle_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -498,11 +556,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/inner_finger_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -560,11 +614,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/inner_knuckle_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -622,11 +672,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/inner_finger_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -684,11 +730,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/outer_knuckle_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -746,11 +788,7 @@
         <mesh
           filename="/home/simt-wj/01_Active/tesseract_python/meshes/robotiq_2f_85/outer_finger_fine.STL" />
       </geometry>
-      <material
-        name="">
-        <color
-          rgba="0.1 0.1 0.1 1" />
-      </material>
+      <material name="robotiq_gray"/>
     </visual>
     <collision>
       <origin
@@ -787,9 +825,7 @@
       <geometry>
         <box size="0.01 0.01 0.01"/>
       </geometry>
-      <material name="">
-        <color rgba="1.0 0.0 0.0 1.0"/>
-      </material>
+      <material name="red"/>
     </visual>
     <!-- <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -816,24 +852,37 @@
       <geometry>
         <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/realsense_d435i/d435.dae"/>
       </geometry>
-      <material name="camera_material">
-        <color rgba="0.5 0.5 0.5 1.0"/>
-      </material>
+      <material name="camera_material"/>
     </visual>
 
     <collision>
-      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <origin xyz="0 0 -0.015" rpy="0 0 0"/>
       <geometry>
-        <box size="0.09 0.025 0.025"/>
+        <box size="0.09 0.025 0.030"/>
       </geometry>
     </collision>
   </link>
 
-  <joint name="camera_joint" type="fixed">
-    <parent link="Link6"/>
-    <child link="camera_link"/>
-    <origin xyz="-0.11 0.00 0.07" rpy="0.4 0.0 1.57"/>
-    <!-- <origin xyz="-0.118 0.038 0.0703" rpy="0.4 0.0 1.57"/> -->
+  <link name="camera_plug_link">
+    <visual>
+      <origin xyz="0. -0.022425 0." rpy="0 0 1.57"/>
+      <geometry>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/realsense_d435i/plug_collision.stl"/>
+      </geometry>
+      <material name="usb_cable"/>
+    </visual>
+    <collision>
+      <origin xyz="0. -0.022425 0." rpy="0 0 1.57"/>
+      <geometry>
+        <mesh filename="/home/simt-wj/01_Active/tesseract_python/meshes/realsense_d435i/plug_collision.stl"/>
+      </geometry>
+    </collision>
+  </link>
+
+  <joint name="camera_plug_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="camera_plug_link"/>
+    <origin xyz="-0.039 0. -0.021" rpy="0 1.57 -1.57"/>
   </joint>
 
 </robot>
