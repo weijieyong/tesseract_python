@@ -7,8 +7,8 @@ from scipy.interpolate import BPoly
 
 from tesseract_robotics.tesseract_common import GeneralResourceLocator
 from tesseract_robotics.tesseract_environment import Environment, AnyPoly_wrap_EnvironmentConst, AddLinkCommand
-from tesseract_robotics.tesseract_common import FilesystemPath, Isometry3d, Translation3d, Quaterniond, \
-    ManipulatorInfo, AnyPoly, AnyPoly_wrap_double
+from tesseract_robotics.tesseract_common import FilesystemPath, Isometry3d, Translation3d, \
+    ManipulatorInfo, AnyPoly, AnyPoly_wrap_double, AngleAxisd
 from tesseract_robotics.tesseract_command_language import CartesianWaypoint, WaypointPoly, \
     MoveInstructionType_FREESPACE, MoveInstruction, InstructionPoly, StateWaypoint, StateWaypointPoly, \
     CompositeInstruction, MoveInstructionPoly, CartesianWaypointPoly, ProfileDictionary, \
@@ -94,9 +94,9 @@ t_env = Environment()
 assert t_env.init(rm_65_b_urdf_fname, rm_65_b_srdf_fname, locator)
 
 # Add a fixed obstacle so the planner must route around it
-BOX_HEIGHT = 0.8
-BOX_WIDTH = 0.1
-BOX_DEPTH = 0.6
+BOX_HEIGHT = 0.3
+BOX_WIDTH = 0.03
+BOX_DEPTH = 0.3
 box_obstacle = Box(BOX_DEPTH, BOX_WIDTH, BOX_HEIGHT)
 # box_obstacle = Box(0.3, 0.1, 0.4) # small
 box_link = Link("box_obstacle")
@@ -111,8 +111,7 @@ box_joint = Joint("box_obstacle_joint")
 box_joint.parent_link_name = "base_cuboid"
 box_joint.child_link_name = box_link.getName()
 box_joint.type = JointType_FIXED
-box_joint.parent_to_joint_origin_transform = Isometry3d.Identity() * Translation3d(0.9, 0.0, BOX_HEIGHT/2)
-# box_joint.parent_to_joint_origin_transform = Isometry3d.Identity() * Translation3d(0.45, 0.0, 0.3)
+box_joint.parent_to_joint_origin_transform = Isometry3d.Identity() * Translation3d(0.6, -0.03, BOX_HEIGHT/2)
 
 t_env.applyCommand(AddLinkCommand(box_link, box_joint))
 
@@ -137,10 +136,36 @@ viewer.start_serve_background()
 # Set the initial state of the robot
 t_env.setState(joint_names, np.ones(6)*0.1)
 
+def axis_angle_pose(x, y, z, *rotations):
+    # Convenience helper to build a pose from translation + one or more axis-angle rotations
+    pose = Isometry3d.Identity() * Translation3d(x, y, z)
+    for axis, angle_deg in rotations:
+        axis = np.asarray(axis, dtype=float)
+        norm = np.linalg.norm(axis)
+        if norm == 0:
+            raise ValueError("Axis for AngleAxisd cannot be zero")
+        axis /= norm
+        pose *= AngleAxisd(np.deg2rad(angle_deg), axis)
+    return pose
+
 # Create the input command program waypoints
-wp1 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.3, 0.45) * Quaterniond(0, 0, 1, 0))
-wp2 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.39, -0.3, 0.43) * Quaterniond(0, 0, 1, 0))
-# wp3 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.14, 0.73) * Quaterniond(0, 0, 1, 0))
+# Default orientation: 180 deg about Y (matches previous quaternion example)
+base_axis = [0, 1, 0]
+base_angle_deg = 180
+wp1 = CartesianWaypoint(axis_angle_pose(0.48, -0.06, 0.45, (base_axis, base_angle_deg)))
+
+# Second waypoint: 180 deg about Y then 30 deg about X
+wp2 = CartesianWaypoint(
+    axis_angle_pose(
+        0.55,
+        0.13,
+        0.14,
+        ([0, 1, 0], 190),
+        ([1, 0, 0], 20),
+        ([0, 0, 1], 0),
+    )
+)
+# wp3 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.14, 0.73) * q_down)
 
 # Create the input command program instructions. Note the use of explicit construction of the CartesianWaypointPoly
 # using the *_wrap_CartesianWaypoint functions. This is required because the Python bindings do not support implicit
@@ -213,6 +238,8 @@ for instr in results:
 viewer.update_trajectory(results)
 viewer.plot_trajectory(results, manip_info)
 
+print(f"web viewer: http://localhost:8000")
+
 input("press enter to exit")
 
 # Analyze the trajectory
@@ -263,7 +290,7 @@ if len(velocities) > 0 and len(velocities[0]) > 0:
             pos_deg = np.rad2deg(pos)
             pos_str = ", ".join(f"{angle:.6f}" for angle in pos_deg)
             # print(f"Time {t:.3f}: {pos_str}")
-            f.write(f"{t:.6f}, {pos_str}\n")
+            f.write(f"{pos_str}\n")
             
     print(f"Interpolated trajectory saved to {fixed_output_path}")
     print(f"Total points: {len(fixed_timestamps)}")
