@@ -10,7 +10,7 @@ from tesseract_robotics.tesseract_environment import Environment, AnyPoly_wrap_E
 from tesseract_robotics.tesseract_common import FilesystemPath, Isometry3d, Translation3d, \
     ManipulatorInfo, AnyPoly, AnyPoly_wrap_double, AngleAxisd
 from tesseract_robotics.tesseract_command_language import CartesianWaypoint, WaypointPoly, \
-    MoveInstructionType_FREESPACE, MoveInstruction, InstructionPoly, StateWaypoint, StateWaypointPoly, \
+    MoveInstructionType_FREESPACE, MoveInstructionType_LINEAR, MoveInstruction, InstructionPoly, StateWaypoint, StateWaypointPoly, \
     CompositeInstruction, MoveInstructionPoly, CartesianWaypointPoly, ProfileDictionary, \
         AnyPoly_as_CompositeInstruction, CompositeInstructionOrder_ORDERED, DEFAULT_PROFILE_KEY, \
         AnyPoly_wrap_CompositeInstruction, DEFAULT_PROFILE_KEY, JointWaypoint, JointWaypointPoly, \
@@ -98,7 +98,6 @@ BOX_HEIGHT = 0.3
 BOX_WIDTH = 0.03
 BOX_DEPTH = 0.3
 box_obstacle = Box(BOX_DEPTH, BOX_WIDTH, BOX_HEIGHT)
-# box_obstacle = Box(0.3, 0.1, 0.4) # small
 box_link = Link("box_obstacle")
 box_visual = Visual()
 box_visual.geometry = box_obstacle
@@ -152,27 +151,33 @@ def axis_angle_pose(x, y, z, *rotations):
 # Default orientation: 180 deg about Y (matches previous quaternion example)
 base_axis = [0, 1, 0]
 base_angle_deg = 180
-wp1 = CartesianWaypoint(axis_angle_pose(0.48, -0.06, 0.45, (base_axis, base_angle_deg)))
+# wp1 = CartesianWaypoint(axis_angle_pose(0.30, -0.06, 0.45, (base_axis, base_angle_deg)))
+# Use joint angles for the start waypoint (wp1)
+HOME_JOINT_POSITIONS = np.deg2rad(np.array([0, -78, 120, 0, 78, 0]))
+wp1 = JointWaypoint(joint_names, HOME_JOINT_POSITIONS)
 
 # Second waypoint: 180 deg about Y then 30 deg about X
-wp2 = CartesianWaypoint(
-    axis_angle_pose(
-        0.55,
-        0.13,
-        0.14,
-        ([0, 1, 0], 190),
-        ([1, 0, 0], 20),
-        ([0, 0, 1], 0),
-    )
+wp2_pose = axis_angle_pose(
+    0.55,
+    0.13,
+    0.14,
+    ([0, 1, 0], 190),
+    ([1, 0, 0], 20),
+    ([0, 0, 1], 0),
 )
-# wp3 = CartesianWaypoint(Isometry3d.Identity() * Translation3d(0.38, 0.14, 0.73) * q_down)
+wp2 = CartesianWaypoint(wp2_pose)
+
+# Linear approach waypoint: 3cm along tool Z axis
+APPROACH_DISTANCE = 0.08
+wp3 = CartesianWaypoint(wp2_pose * Translation3d(0, 0, APPROACH_DISTANCE))
 
 # Create the input command program instructions. Note the use of explicit construction of the CartesianWaypointPoly
 # using the *_wrap_CartesianWaypoint functions. This is required because the Python bindings do not support implicit
 # conversion from the CartesianWaypoint to the CartesianWaypointPoly.
-start_instruction = MoveInstruction(CartesianWaypointPoly_wrap_CartesianWaypoint(wp1), MoveInstructionType_FREESPACE, "DEFAULT")
+start_instruction = MoveInstruction(JointWaypointPoly_wrap_JointWaypoint(wp1), MoveInstructionType_FREESPACE, "DEFAULT")
 plan_f1 = MoveInstruction(CartesianWaypointPoly_wrap_CartesianWaypoint(wp2), MoveInstructionType_FREESPACE, "DEFAULT")
-# plan_f2 = MoveInstruction(CartesianWaypointPoly_wrap_CartesianWaypoint(wp3), MoveInstructionType_FREESPACE, "DEFAULT")
+# Linear approach motion for picking - uses LINEAR to maintain straight-line tool path
+plan_f2 = MoveInstruction(CartesianWaypointPoly_wrap_CartesianWaypoint(wp3), MoveInstructionType_LINEAR, "DEFAULT")
 
 # Create the input command program. Note the use of *_wrap_MoveInstruction functions. This is required because the
 # Python bindings do not support implicit conversion from the MoveInstruction to the MoveInstructionPoly.
@@ -180,7 +185,7 @@ program = CompositeInstruction("DEFAULT")
 program.setManipulatorInfo(manip_info)
 program.appendMoveInstruction(MoveInstructionPoly_wrap_MoveInstruction(start_instruction))
 program.appendMoveInstruction(MoveInstructionPoly_wrap_MoveInstruction(plan_f1))
-# program.appendMoveInstruction(MoveInstructionPoly(plan_f2))
+program.appendMoveInstruction(MoveInstructionPoly_wrap_MoveInstruction(plan_f2))
 
 # Create the task composer plugin factory and load the plugins
 config_path = FilesystemPath(task_composer_filename)
